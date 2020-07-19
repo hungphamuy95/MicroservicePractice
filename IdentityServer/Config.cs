@@ -20,10 +20,20 @@ namespace IdentityServer
                 {
                     ClientId = "oauthClient",
                     ClientName = "Example client application using client credentials",
-                    ClientSecrets = new List<Secret>{ new Secret("SuperSecretPassword".Sha256())},
-
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
+                    AllowedScopes = new List<string> {"api1.read"}
+                },
+                new Client
+                {
+                    ClientId = "oidcClient",
+                    ClientName = "Example Client Application",
+                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
+    
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string>{"https://localhost:5002/signin-oidc"},
+                    RedirectUris = new List<string> {"https://localhost:5006/signin-oidc"},
+                    FrontChannelLogoutUri = "https://localhost:5006/signin-oidc",
+                    PostLogoutRedirectUris = {"https://localhost:5006/signin-oidc"},
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -32,6 +42,7 @@ namespace IdentityServer
                         "role",
                         "api1.read"
                     },
+
                     RequirePkce = true,
                     AllowPlainTextPkce = false
                 }

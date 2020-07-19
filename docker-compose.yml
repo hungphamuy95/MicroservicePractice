@@ -1,22 +1,39 @@
 version: '3.4'
 
 services:
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Hungph@1995"
+      ACCEPT_EULA: "Y"
+
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     build:
       context: .
       dockerfile: IdentityServer/Dockerfile
-
+    depends_on:
+      - sqldata
+    ports:
+      - "5001:80"
+      - "5002:443"
+ 
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
       dockerfile: WebApi/Dockerfile
+    ports:
+      - "5003:80"
+      - "5004:443"
+
   webmvc:
     image: ${DOCKER_REGISTRY-}webmvc
     build:
       context: .
       dockerfile: WebMVC/Dockerfile
-  sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest 
-
+    ports:
+      - "5005:80"
+      - "5006:443"

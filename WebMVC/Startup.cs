@@ -26,12 +26,13 @@ namespace WebMVC
             services.AddControllersWithViews();
             services.AddAuthentication(opt =>
             {
-                opt.DefaultScheme = "cookie";
-                opt.DefaultScheme = "oidc";
-            }).AddCookie("cookie")
+                opt.DefaultScheme = "Cookies";
+                opt.DefaultChallengeScheme = "oidc";
+            }).AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", opt =>
                 {
-                    opt.Authority = "https://localhost:32777/";
+                    opt.SignInScheme = "Cookies";
+                    opt.Authority = "https://localhost:5002";
                     opt.ClientId = "oidcClient";
                     opt.ClientSecret = "SuperSecretPassword";
 
@@ -39,10 +40,8 @@ namespace WebMVC
                     opt.UsePkce = true;
                     opt.ResponseMode = "query";
 
-                    // options.CallbackPath = "/signin-oidc"; // default redirect URI
-
-                    // options.Scope.Add("oidc"); // default scope
-                    // options.Scope.Add("profile"); // default scope
+                    opt.Scope.Add("oidc"); // default scope
+                    opt.Scope.Add("profile"); // default scope
                     opt.Scope.Add("api1.read");
                     opt.SaveTokens = true;
                 });
