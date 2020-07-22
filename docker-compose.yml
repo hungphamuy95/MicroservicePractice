@@ -25,6 +25,8 @@ services:
     build:
       context: .
       dockerfile: WebApi/Dockerfile
+    depends_on:
+      - identityserver
     ports:
       - "5003:80"
       - "5004:443"
@@ -34,6 +36,8 @@ services:
     build:
       context: .
       dockerfile: WebMVC/Dockerfile
+    depends_on:
+      - identityserver
     ports:
       - "5005:80"
       - "5006:443"

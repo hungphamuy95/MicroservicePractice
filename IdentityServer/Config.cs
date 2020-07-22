@@ -31,20 +31,20 @@ namespace IdentityServer
                     ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
     
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"https://localhost:5006/signin-oidc"},
-                    FrontChannelLogoutUri = "https://localhost:5006/signin-oidc",
-                    PostLogoutRedirectUris = {"https://localhost:5006/signin-oidc"},
+                    RedirectUris = new List<string> {"http://host.docker.internal:5005/signin-oidc"},
+                    //FrontChannelLogoutUri = "http://host.docker.internal:5005/signout-oidc",
+                    PostLogoutRedirectUris = { "http://host.docker.internal:5005/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "role",
-                        "api1.read"
+                        "role"
                     },
 
                     RequirePkce = true,
-                    AllowPlainTextPkce = false
+                    AllowPlainTextPkce = false,
+                    RequireConsent = true
                 }
             };
         }
@@ -59,7 +59,7 @@ namespace IdentityServer
                 new IdentityResource
                 {
                     Name = "role",
-                    UserClaims = new List<string> {"role"}
+                    UserClaims = new List<string> {"ADMIN", "USER"}
                 }
             };
         }

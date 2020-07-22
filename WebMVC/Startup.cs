@@ -32,17 +32,19 @@ namespace WebMVC
                 .AddOpenIdConnect("oidc", opt =>
                 {
                     opt.SignInScheme = "Cookies";
-                    opt.Authority = "https://localhost:5002";
+                    opt.Authority = "http://host.docker.internal:5001";
                     opt.ClientId = "oidcClient";
                     opt.ClientSecret = "SuperSecretPassword";
-
+                    opt.RequireHttpsMetadata = false;
                     opt.ResponseType = "code";
                     opt.UsePkce = true;
                     opt.ResponseMode = "query";
 
-                    opt.Scope.Add("oidc"); // default scope
+                    opt.Scope.Add("openid"); // default scope
                     opt.Scope.Add("profile"); // default scope
-                    opt.Scope.Add("api1.read");
+                    opt.Scope.Add("email");
+                    opt.Scope.Add("role"); // default scope
+                    //opt.Scope.Add("api1.read");
                     opt.SaveTokens = true;
                 });
         }
@@ -60,19 +62,15 @@ namespace WebMVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+
+            app.UseAuthentication();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }
 }
