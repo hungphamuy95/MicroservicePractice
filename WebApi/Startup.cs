@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApi
 {
@@ -27,11 +28,23 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication("Bearer", opt =>
+                .AddJwtBearer("Bearer", opt =>
                 {
-                    opt.ApiName = "api1";
-                    opt.Authority = "http://localhost:32769";
+                    opt.Authority = "http://host.docker.internal:5001";
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                    opt.RequireHttpsMetadata = false;
                 });
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "api1");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +63,7 @@ namespace WebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers().RequireAuthorization("ApiScope");
             });
         }
     }

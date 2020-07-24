@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +11,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -22,7 +25,7 @@ namespace WebApi.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

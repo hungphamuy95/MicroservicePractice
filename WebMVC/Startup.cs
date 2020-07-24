@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +47,16 @@ namespace WebMVC
                     opt.Scope.Add("role"); // default scope
                     //opt.Scope.Add("api1.read");
                     opt.SaveTokens = true;
+                    opt.Events = new OpenIdConnectEvents
+                    {
+                        OnRemoteFailure = (context) =>
+                        {
+                            context.Response.Redirect("/");
+                            context.HandleResponse();
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
         }
 
@@ -63,11 +74,9 @@ namespace WebMVC
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());

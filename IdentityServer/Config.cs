@@ -18,11 +18,19 @@ namespace IdentityServer
             {
                 new Client
                 {
-                    ClientId = "oauthClient",
-                    ClientName = "Example client application using client credentials",
+                    ClientId = "client",
+
+                    // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
-                    AllowedScopes = new List<string> {"api1.read"}
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    // scopes that client has access to
+                    AllowedScopes = { "api1" }
                 },
                 new Client
                 {
@@ -32,7 +40,7 @@ namespace IdentityServer
     
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = new List<string> {"http://host.docker.internal:5005/signin-oidc"},
-                    //FrontChannelLogoutUri = "http://host.docker.internal:5005/signout-oidc",
+                    FrontChannelLogoutUri = "http://host.docker.internal:5005/signout-oidc",
                     PostLogoutRedirectUris = { "http://host.docker.internal:5005/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
@@ -73,7 +81,7 @@ namespace IdentityServer
                     Name = "customAPI",
                     DisplayName = "API #1",
                     Description = "Allow the application to access API #1 on your behalf",
-                    Scopes = new List<string> {"api1.read", "api1.write"},
+                    Scopes = new List<string> {"api1"},
                     ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())},
                     UserClaims = new List<string> {"role"}
                 }
@@ -84,8 +92,7 @@ namespace IdentityServer
         {
             return new[]
             {
-                new ApiScope("api1.read", "Read Access to API #1"),
-                new ApiScope("api1.write", "Write Access to API #1")
+                new ApiScope("api1", "Read Access to API #1")
             };
         }
 

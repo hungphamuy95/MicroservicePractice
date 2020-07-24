@@ -9,6 +9,15 @@ services:
       SA_PASSWORD: "Hungph@1995"
       ACCEPT_EULA: "Y"
 
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: "post_db"
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "Hungph@1995"
+
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     build:
@@ -27,6 +36,7 @@ services:
       dockerfile: WebApi/Dockerfile
     depends_on:
       - identityserver
+      - mongodb
     ports:
       - "5003:80"
       - "5004:443"
