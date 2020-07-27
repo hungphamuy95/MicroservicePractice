@@ -17,6 +17,9 @@ services:
       MONGO_INITDB_DATABASE: "post_db"
       MONGO_INITDB_ROOT_USERNAME: "admin"
       MONGO_INITDB_ROOT_PASSWORD: "Hungph@1995"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+      - ./mongo-volume:/data/db
 
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
