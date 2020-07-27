@@ -51,3 +51,13 @@ services:
     ports:
       - "5005:80"
       - "5006:443"
+
+  webspa:
+    image: ${DOCKER_REGISTRY-}webspa
+    build:
+      context: .
+      dockerfile: web-spa/Dockerfile
+    depends_on:
+      - webapi
+    ports:
+      - "5007:8080"
