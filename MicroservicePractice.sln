@@ -11,6 +11,10 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC", "WebMVC\WebMVC.csproj", "{0DD38718-3C3D-49CE-ACE0-5607CF265647}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{99BF1051-8E15-484A-96C9-78508C08B0BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.WebApi", "Test\Test.WebApi\Test.WebApi.csproj", "{AB6580F3-40B5-4006-9EEB-838320550A37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{0DD38718-3C3D-49CE-ACE0-5607CF265647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DD38718-3C3D-49CE-ACE0-5607CF265647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DD38718-3C3D-49CE-ACE0-5607CF265647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6580F3-40B5-4006-9EEB-838320550A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6580F3-40B5-4006-9EEB-838320550A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6580F3-40B5-4006-9EEB-838320550A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6580F3-40B5-4006-9EEB-838320550A37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AB6580F3-40B5-4006-9EEB-838320550A37} = {99BF1051-8E15-484A-96C9-78508C08B0BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BEBF825-5990-4AC6-9B3D-0CF390E4313C}
