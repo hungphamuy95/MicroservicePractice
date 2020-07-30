@@ -28,25 +28,30 @@
     <v-row dense>
       <v-col v-for="target in targets" :key="target.id" :cols="target.flex">
         <v-hover v-slot:default="{ hover }" open-delay="200">
-          <v-card :elevation="hover ? 16 : 2"> 
+          <v-card :elevation="hover ? 16 : 2">
             <v-card-title v-text="target.title"></v-card-title>
             <draggable class="dragArea list-group" :list="target.tasks" group="spec">
-            <v-container>
-              <v-row dense>
-                <draggable class="dragArea list-group" :list="target.tasks" group="spec" @change="handleChangCard($event, )">
-                  <transition-group>
-                  <v-col cols="12" v-for="task in target.tasks" :key="task.id">
-                    <div class="note-item">
-                      <v-card :color="target.color" dark class="detail-note" :id="task.id">
-                        <v-card-title class="headline note-item">{{task.taskTitle}}</v-card-title>
-                        <v-card-subtitle class="note-item" :id="task.id">{{task.content}}</v-card-subtitle>
-                      </v-card>
-                    </div>
-                  </v-col>
-                  </transition-group>
-                </draggable>
-              </v-row>
-            </v-container>
+              <div style="overflow-y: auto; max-height: 700px;">
+                <v-container>
+                  <v-row dense>
+                    <draggable
+                      class="dragArea list-group"
+                      :list="target.tasks"
+                      group="spec"
+                      @change="handleChangCard($event, )"
+                    >
+                      <v-col cols="12" v-for="task in target.tasks" :key="task.id">
+                        <div class="note-item">
+                          <v-card :color="target.color" dark class="detail-note" :id="task.id">
+                            <v-card-title class="headline note-item">{{task.taskTitle}}</v-card-title>
+                            <v-card-subtitle class="note-item" :id="task.id">{{task.content}}</v-card-subtitle>
+                          </v-card>
+                        </div>
+                      </v-col>
+                    </draggable>
+                  </v-row>
+                </v-container>
+              </div>
             </draggable>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -91,7 +96,12 @@ export default {
         flex: 4,
         color: "#385F73",
         tasks: [
-          { id: 8, taskTitle: "visual studio", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vestibulum, sapien eu lobortis malesuada, diam leo finibus diam, in elementum lacus ipsum in libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas eget mauris dui. Integer non tortor nec dolor semper dictum. Aliquam lacinia tempus iaculis. Aenean rutrum congue tempor. Quisque commodo semper ante, eget eleifend enim malesuada et. Aenean tincidunt mollis ante, at ultrices eros interdum ut. Phasellus dui sapien, pellentesque vel mi at, feugiat auctor ipsum." },
+          {
+            id: 8,
+            taskTitle: "visual studio",
+            content:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vestibulum, sapien eu lobortis malesuada, diam leo finibus diam, in elementum lacus ipsum in libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas eget mauris dui. Integer non tortor nec dolor semper dictum. Aliquam lacinia tempus iaculis. Aenean rutrum congue tempor. Quisque commodo semper ante, eget eleifend enim malesuada et. Aenean tincidunt mollis ante, at ultrices eros interdum ut. Phasellus dui sapien, pellentesque vel mi at, feugiat auctor ipsum.",
+          },
           { id: 9, taskTitle: "jetbrains", content: "jetbrains" },
           { id: 10, taskTitle: "eclips", content: "eclips" },
         ],
@@ -106,7 +116,7 @@ export default {
     ],
     dialog: false,
     dialogTitle: "",
-    noteId: ""
+    noteId: "",
   }),
   methods: {
     openEditNote(e) {
@@ -120,26 +130,23 @@ export default {
         this.dialogTitle = "Add Note";
       }
     },
-    handleChangCard(e){
+    handleChangCard(e) {
       let id = 0;
-      if(Object.prototype.hasOwnProperty.call(e, "moved")){
+      if (Object.prototype.hasOwnProperty.call(e, "moved")) {
         id = e.moved.element.id;
-      }
-      else if(Object.prototype.hasOwnProperty.call(e, "removed"))
-      {
+      } else if (Object.prototype.hasOwnProperty.call(e, "removed")) {
         id = e.removed.element.id;
-      }
-      else if(Object.prototype.hasOwnProperty.call(e, "added")){
+      } else if (Object.prototype.hasOwnProperty.call(e, "added")) {
         id = e.added.element.id;
       }
       console.log(id);
-    }
+    },
   },
 };
 </script>
 <style scoped>
-.detail-note{
+.detail-note {
   cursor: all-scroll;
-  height:100% !important
+  height: 100% !important;
 }
 </style>

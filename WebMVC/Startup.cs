@@ -33,7 +33,7 @@ namespace WebMVC
                 .AddOpenIdConnect("oidc", opt =>
                 {
                     opt.SignInScheme = "Cookies";
-                    opt.Authority = "http://host.docker.internal:5001";
+                    opt.Authority = "http://docker.for.win.localhost:5001";
                     opt.ClientId = "oidcClient";
                     opt.ClientSecret = "SuperSecretPassword";
                     opt.RequireHttpsMetadata = false;

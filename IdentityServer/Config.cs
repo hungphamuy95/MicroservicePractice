@@ -39,9 +39,9 @@ namespace IdentityServer
                     ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
     
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"http://host.docker.internal:5005/signin-oidc"},
-                    FrontChannelLogoutUri = "http://host.docker.internal:5005/signout-oidc",
-                    PostLogoutRedirectUris = { "http://host.docker.internal:5005/signout-callback-oidc" },
+                    RedirectUris = new List<string> {"http://docker.for.win.localhost:5005/signin-oidc"},
+                    FrontChannelLogoutUri = "http://docker.for.win.localhost:5005/signout-oidc",
+                    PostLogoutRedirectUris = { "http://docker.for.win.localhost:5005/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -53,6 +53,18 @@ namespace IdentityServer
                     RequirePkce = true,
                     AllowPlainTextPkce = false,
                     RequireConsent = true
+                },
+                new Client
+                {
+                    ClientId = "js",
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "role",
+                        "api1"
+                    },
                 }
             };
         }

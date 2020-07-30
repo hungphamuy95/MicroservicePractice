@@ -41,7 +41,7 @@ namespace WebApi
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", opt =>
                 {
-                    opt.Authority = "http://host.docker.internal:5001";
+                    opt.Authority = "http://docker.for.win.localhost:5001";
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
