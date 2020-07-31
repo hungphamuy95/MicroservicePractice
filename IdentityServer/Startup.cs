@@ -45,7 +45,13 @@ namespace IdentityServer
                         sql => sql.MigrationsAssembly(migrationAssembly));
                 });
             services.AddControllersWithViews();
-
+            services.AddCors(options => { options.AddPolicy("default", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +62,7 @@ namespace IdentityServer
             
 
             app.UseStaticFiles();
-
+            app.UseCors("default");
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();

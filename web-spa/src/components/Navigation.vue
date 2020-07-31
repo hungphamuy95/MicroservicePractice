@@ -7,7 +7,7 @@
 
           <v-toolbar-title>Todoist</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn icon>
+          <v-btn icon @click="handleLogout">
             <v-icon>mdi-logout</v-icon>
           </v-btn>
         </v-app-bar>
@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+import auth from './../common/AuthService'
 import Board from "./Board";
 export default {
   name: "Navigation",
@@ -49,5 +50,11 @@ export default {
   data: () => ({
     drawer: false,
   }),
+  methods:{
+    handleLogout(){
+      console.log("fuck")
+      auth.signoutRedirect();
+    }
+  }
 };
 </script>

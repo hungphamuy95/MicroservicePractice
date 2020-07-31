@@ -57,6 +57,14 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "js",
+                    ClientName = "JavaScript Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+                    //http://docker.for.win.localhost:5007/#/callback
+                    //http://localhost:8080/#/callback
+                    RedirectUris = { "http://docker.for.win.localhost:5007/#/callback", ""},
+                    PostLogoutRedirectUris = {"http://docker.for.win.localhost:5007"},
+                    AllowedCorsOrigins = { "http://docker.for.win.localhost:5007", },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

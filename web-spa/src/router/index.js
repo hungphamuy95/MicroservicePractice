@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../components/Navigation.vue'
-import Test from '../components/WelcomPage.vue'
+import Board from '../components/Navigation.vue'
+import Home from '../components/WelcomPage.vue'
+import guard from './../common/guard'
+import Callback from '../components/WaitingLogin.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +14,17 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/test',
-    name: 'Test',
-    component: Test
+    path: '/callback',
+    name: 'Callback',
+    component: Callback
+  },
+  {
+    path: '/board',
+    name: 'Board',
+    component: Board,
+    beforeEnter: (to, fr, next) => {
+      guard(to, fr, next)
+    }
   }
 ]
 
