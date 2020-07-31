@@ -2,9 +2,8 @@
   <v-app>
     <div class="overflow-hidden">
       <v-app-bar color="white">
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Title</v-toolbar-title>
+        <v-toolbar-title>Todoist</v-toolbar-title>
 
         <v-spacer></v-spacer>
 

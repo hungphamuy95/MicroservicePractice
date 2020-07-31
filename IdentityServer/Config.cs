@@ -62,9 +62,9 @@ namespace IdentityServer
                     RequireClientSecret = false,
                     //http://docker.for.win.localhost:5007/#/callback
                     //http://localhost:8080/#/callback
-                    RedirectUris = { "http://docker.for.win.localhost:5007/#/callback", ""},
-                    PostLogoutRedirectUris = {"http://docker.for.win.localhost:5007"},
-                    AllowedCorsOrigins = { "http://docker.for.win.localhost:5007", },
+                    RedirectUris = { "http://localhost:8080/#/callback", ""},
+                    PostLogoutRedirectUris = {"http://localhost:8080"},
+                    AllowedCorsOrigins = { "http://localhost:8080", },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
