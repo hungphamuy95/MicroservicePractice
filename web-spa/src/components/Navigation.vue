@@ -52,7 +52,6 @@ export default {
   }),
   methods:{
     handleLogout(){
-      console.log("fuck")
       auth.signoutRedirect();
     }
   }
