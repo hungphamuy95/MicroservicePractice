@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using IdentityServer.Areas.Identity.Data;
+using IdentityServer.Services;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +14,8 @@ using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,21 +34,25 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            var conn = _config.GetSection("SqlConn:ConnectionString").Value;
+            var conn = _config.GetSection("SqlConn:ConnectionString").Value;    
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddTestUsers(Config.GetUsers())
+                //.AddTestUsers(Config.GetUsers())
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(conn,
+                    options.ConfigureDbContext = b => 
+                        b.UseSqlServer(conn,
                         sql => sql.MigrationsAssembly(migrationAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(conn,
                         sql => sql.MigrationsAssembly(migrationAssembly));
-                });
+                })
+                .AddAspNetIdentity<ApplicationUser>();
+                //;
             services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddCors(options => { options.AddPolicy("default", policy =>
                 {
                     policy.AllowAnyOrigin()
@@ -52,6 +60,15 @@ namespace IdentityServer
                         .AllowAnyMethod();
                 });
             });
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.ConfigureApplicationCookie(o =>
+            {
+                o.ExpireTimeSpan = TimeSpan.FromDays(5);
+                o.SlidingExpiration = true;
+            });
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+                o.TokenLifespan = TimeSpan.FromHours(3));
+            services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +81,14 @@ namespace IdentityServer
             app.UseStaticFiles();
             app.UseCors("default");
             app.UseRouting();
+            // app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
+            });
         }
 
         private void InitializeDatabase(IApplicationBuilder app)
@@ -112,6 +134,8 @@ namespace IdentityServer
 
                 context.SaveChanges();
             }
+            var aspnetIdentityContext = serviceScope.ServiceProvider.GetRequiredService<TodoistContext>();
+            aspnetIdentityContext.Database.Migrate();
         }
     }
 }
