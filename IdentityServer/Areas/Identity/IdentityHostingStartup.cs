@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer.Areas.Identity.Data;
 using IdentityServer.Data;
+using IdentityServer.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -22,7 +23,13 @@ namespace IdentityServer.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("TodoistContextConnection")));
 
-                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<ApplicationUser>(options =>
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.Tokens.ProviderMap.Add("CustomEmailConfirmation",
+                            new TokenProviderDescriptor(typeof(CustomEmailConfirmationTokenProvider<ApplicationUser>)));
+                        options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                    })
                     .AddEntityFrameworkStores<TodoistContext>()
                     .AddDefaultTokenProviders();
                 //.AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>();

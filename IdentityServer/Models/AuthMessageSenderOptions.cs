@@ -7,7 +7,9 @@ namespace IdentityServer.Models
 {
     public class AuthMessageSenderOptions
     {
-        public string SendGridUser { get; set; }
-        public string SendGridKey { get; set; }
+        public string SendGridUser { get; set; } = "<Your sendrid user>";
+
+        public string SendGridKey { get; set; } =
+            "Your Sendgrid api key";
     }
 }

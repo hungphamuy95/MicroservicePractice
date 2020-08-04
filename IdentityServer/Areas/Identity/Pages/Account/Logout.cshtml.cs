@@ -26,7 +26,7 @@ namespace IdentityServer.Areas.Identity.Pages.Account
             _interaction = interaction;
         }
 
-        public async Task OnGet(string logoutId =  null, string returnUrl = null)
+        public void OnGet(string logoutId =  null, string returnUrl = null)
         {
             
             
